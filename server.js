@@ -9,10 +9,14 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
-const mongoURI = 'mongodb+srv://yatharthpatel014:yatharth@cluster0.iq2m5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const mongoURI = 'mongodb+srv://yatharthpatel014:yatharth@cluster0.iq2m5.mongodb.net/ResumeData?retryWrites=true&w=majority';
+
+
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+     ssl: true,
+    sslValidate: true,
     dbName: 'ResumeData'
 });
 
