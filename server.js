@@ -16,7 +16,7 @@ mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
      tls: true, 
-    tlsAllowInvalidCertificates: true
+    tlsAllowInvalidCertificates: true,
     dbName: 'ResumeData'
 });
 
