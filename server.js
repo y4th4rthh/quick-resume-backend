@@ -15,8 +15,8 @@ const mongoURI = 'mongodb+srv://yatharthpatel014:yatharth@cluster0.iq2m5.mongodb
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-     ssl: true,
-    sslValidate: true,
+     tls: true, 
+    tlsAllowInvalidCertificates: true
     dbName: 'ResumeData'
 });
 
