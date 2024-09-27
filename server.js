@@ -102,20 +102,20 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-app.post('/api/resume', async (req, res) => {
-    try {
-        const resumeData = req.body;
+// app.post('/api/resume', async (req, res) => {
+//     try {
+//         const resumeData = req.body;
 
-        const newResume = new Resume(resumeData);
+//         const newResume = new Resume(resumeData);
 
-        const savedResume = await newResume.save();
+//         const savedResume = await newResume.save();
 
-        res.json(savedResume);
-    } catch (err) {
-        console.error('Error saving resume:', err);
-        res.status(500).send('Error saving resume');
-    }
-});
+//         res.json(savedResume);
+//     } catch (err) {
+//         console.error('Error saving resume:', err);
+//         res.status(500).send('Error saving resume');
+//     }
+// });
 
 app.get('/api/resumeData', async (req, res) => {
     try {
@@ -129,27 +129,27 @@ app.get('/api/resumeData', async (req, res) => {
     }
 });
 
-// app.get('/api/search', async (req, res) => {
-//     try {
-//         const { email, fullName } = req.query;
-//         const query = { email, fullName };
+app.get('/api/search', async (req, res) => {
+    try {
+        const { email, fullName } = req.query;
+        const query = { email, fullName };
 
-//         if (!email || !fullName) {
-//             return res.status(400).send('Both email and fullName are required');
-//         }
+        if (!email || !fullName) {
+            return res.status(400).send('Both email and fullName are required');
+        }
 
-//         const resumeData = await Resume.findOne(query);
+        const resumeData = await Resume.findOne(query);
 
-//         if (!resumeData) {
-//             return res.status(404).json({ message: 'No resume found for the given user' });
-//         }
+        if (!resumeData) {
+            return res.status(404).json({ message: 'No resume found for the given user' });
+        }
 
-//         res.json(resumeData);
-//     } catch (err) {
-//         console.error('Error fetching resume data:', err);
-//         res.status(500).send('Error fetching resume data');
-//     }
-// });
+        res.json(resumeData);
+    } catch (err) {
+        console.error('Error fetching resume data:', err);
+        res.status(500).send('Error fetching resume data');
+    }
+});
 
 app.post('/api/resume', async (req, res) => {
     const { email, fullName, ...resumeData } = req.body; // Destructure the request body
