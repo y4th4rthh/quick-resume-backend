@@ -151,6 +151,24 @@ app.get('/api/search', async (req, res) => {
     }
 });
 
+app.delete('/api/delete', async (req, res) => {
+    const { email, fullName } = req.body;
+
+    try {
+        const deletedResume = await Resume.findOneAndDelete({ email, fullName });
+
+        if (!deletedResume) {
+            return res.status(404).json({ message: 'Resume not found' });
+        }
+
+        res.json({ message: 'Resume deleted successfully', deletedResume });
+    } catch (err) {
+        console.error('Error deleting resume:', err);
+        res.status(500).send('Error deleting resume');
+    }
+});
+
+
 
 
 app.listen(PORT, () => {
