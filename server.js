@@ -129,27 +129,49 @@ app.get('/api/resumeData', async (req, res) => {
     }
 });
 
-app.get('/api/search', async (req, res) => {
+// app.get('/api/search', async (req, res) => {
+//     try {
+//         const { email, fullName } = req.query;
+//         const query = { email, fullName };
+
+//         if (!email || !fullName) {
+//             return res.status(400).send('Both email and fullName are required');
+//         }
+
+//         const resumeData = await Resume.findOne(query);
+
+//         if (!resumeData) {
+//             return res.status(404).json({ message: 'No resume found for the given user' });
+//         }
+
+//         res.json(resumeData);
+//     } catch (err) {
+//         console.error('Error fetching resume data:', err);
+//         res.status(500).send('Error fetching resume data');
+//     }
+// });
+
+app.put('/api/resume', async (req, res) => {
+    const { email, fullName, ...updateData } = req.body; 
+
     try {
-        const { email, fullName } = req.query;
-        const query = { email, fullName };
+        const updatedResume = await Resume.findOneAndUpdate(
+            { email, fullName }, 
+            updateData, 
+            { new: true, runValidators: true } 
+        );
 
-        if (!email || !fullName) {
-            return res.status(400).send('Both email and fullName are required');
-        }
-
-        const resumeData = await Resume.findOne(query);
-
-        if (!resumeData) {
+        if (!updatedResume) {
             return res.status(404).json({ message: 'No resume found for the given user' });
         }
 
-        res.json(resumeData);
+        res.json(updatedResume); t
     } catch (err) {
-        console.error('Error fetching resume data:', err);
-        res.status(500).send('Error fetching resume data');
+        console.error('Error updating resume:', err);
+        res.status(500).send('Error updating resume');
     }
 });
+
 
 app.delete('/api/delete', async (req, res) => {
     const { email, fullName } = req.body;
