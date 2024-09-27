@@ -151,26 +151,29 @@ app.get('/api/resumeData', async (req, res) => {
 //     }
 // });
 
-app.put('/api/resume', async (req, res) => {
-    const { email, fullName, ...updateData } = req.body; 
+app.post('/api/resume', async (req, res) => {
+    const { email, fullName, ...resumeData } = req.body; // Destructure the request body
 
     try {
-        const updatedResume = await Resume.findOneAndUpdate(
-            { email, fullName }, 
-            updateData, 
-            { new: true, runValidators: true } 
-        );
+        // Check if the resume already exists
+        const existingResume = await Resume.findOne({ email, fullName });
 
-        if (!updatedResume) {
-            return res.status(404).json({ message: 'No resume found for the given user' });
+        // If it exists, delete the old resume data
+        if (existingResume) {
+            await Resume.findOneAndDelete({ email, fullName });
         }
 
-        res.json(updatedResume); t
+        // Create and save the new resume entry
+        const newResume = new Resume({ email, fullName, ...resumeData });
+        const savedResume = await newResume.save();
+
+        res.json(savedResume); // Respond with the newly created resume
     } catch (err) {
-        console.error('Error updating resume:', err);
-        res.status(500).send('Error updating resume');
+        console.error('Error saving resume:', err);
+        res.status(500).send('Error saving resume');
     }
 });
+
 
 
 app.delete('/api/delete', async (req, res) => {
